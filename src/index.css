@@ -1,0 +1,140 @@
+/* ---------------------------------------------------------------
+   AetherPM design tokens
+   Direction: an engineer's instrument panel, not a generic SaaS app.
+   Palette draws from technical blueprints (deep slate + blueprint
+   cyan) rather than the near-black/terracotta defaults.
+------------------------------------------------------------------ */
+:root {
+  --bg-canvas: #0f1419;
+  --bg-surface: #161b22;
+  --bg-surface-raised: #1c232c;
+  --bg-inset: #0b0f14;
+  --border-subtle: #232b34;
+  --border-strong: #2f3945;
+
+  /* Text */
+  --text-primary: #e6edf3;
+  --text-secondary: #8b98a5;
+  --text-tertiary: #5b6672;
+
+  /* Accent - "blueprint cyan" is the one bold move in this UI */
+  --accent: #4fa8d8;
+  --accent-dim: #2c4a5e;
+  --accent-text: #bfe3f7;
+
+  /* Status */
+  --status-success: #3fb68b;
+  --status-warning: #e8a23d;
+  --status-danger: #e5534b;
+  --status-info: #7c8ff0;
+
+  /* Type */
+  --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+
+  --sidebar-width: 232px;
+  --sidebar-width-collapsed: 64px;
+  --topbar-height: 48px;
+  --inspector-width: 340px;
+}
+
+/* Light theme override - same structure, swapped for daylight use.
+   Toggled via a data-theme attribute on <body>, not a class, so it
+   composes cleanly with anything else that touches body's classList. */
+[data-theme="light"] {
+  --bg-canvas: #f5f6f8;
+  --bg-surface: #ffffff;
+  --bg-surface-raised: #ffffff;
+  --bg-inset: #eceef1;
+  --border-subtle: #e1e4e8;
+  --border-strong: #cdd2d8;
+
+  --text-primary: #1b232c;
+  --text-secondary: #59636e;
+  --text-tertiary: #8b95a1;
+
+  --accent: #1f7bb8;
+  --accent-dim: #dcecf6;
+  --accent-text: #145d8e;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--accent-dim); color: var(--accent-text); }
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--text-primary);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+}
+
+input:focus-visible, textarea:focus-visible, select:focus-visible,
+button:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+a { color: var(--accent-text); }
+
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.app-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: var(--topbar-height) 1fr;
+  grid-template-areas:
+    "sidebar topbar"
+    "sidebar main";
+  height: 100vh;
+}
+.app-shell.sidebar-collapsed { grid-template-columns: var(--sidebar-width-collapsed) 1fr; }
+
+.topbar { grid-area: topbar; }
+.sidebar { grid-area: sidebar; }
+.main-area { grid-area: main; overflow: auto; position: relative; }
+
+.scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
