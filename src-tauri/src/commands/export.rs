@@ -30,7 +30,8 @@ pub fn export_project(db: State<Db>, project_id: String, dest_path: String) -> R
     let mut task_stmt = conn
         .prepare(
             "SELECT id, project_id, title, description, status, priority, parent_task_id,
-             estimate_hours, actual_hours, due_date, created_at FROM tasks WHERE project_id = ?1",
+             estimate_hours, actual_hours, due_date, start_date, assignee_name, sprint_id, tags, created_at
+             FROM tasks WHERE project_id = ?1",
         )
         .map_err(|e| e.to_string())?;
     let tasks: Vec<Task> = task_stmt
@@ -46,7 +47,11 @@ pub fn export_project(db: State<Db>, project_id: String, dest_path: String) -> R
                 estimate_hours: row.get(7)?,
                 actual_hours: row.get(8)?,
                 due_date: row.get(9)?,
-                created_at: row.get(10)?,
+                start_date: row.get(10)?,
+                assignee_name: row.get(11)?,
+                sprint_id: row.get(12)?,
+                tags: row.get(13)?,
+                created_at: row.get(14)?,
             })
         })
         .map_err(|e| e.to_string())?
@@ -129,10 +134,12 @@ pub fn import_project(db: State<Db>, src_path: String) -> Result<Project, String
     for t in &package.tasks {
         conn.execute(
             "INSERT INTO tasks (id, project_id, title, description, status, priority, parent_task_id,
-             estimate_hours, actual_hours, due_date, created_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
+             estimate_hours, actual_hours, due_date, start_date, assignee_name, sprint_id, tags, created_at)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15)",
             params![
                 Uuid::new_v4().to_string(), new_project_id, t.title, t.description, t.status, t.priority,
-                Option::<String>::None, t.estimate_hours, t.actual_hours, t.due_date, t.created_at
+                Option::<String>::None, t.estimate_hours, t.actual_hours, t.due_date,
+                t.start_date, t.assignee_name, Option::<String>::None, t.tags, t.created_at
             ],
         )
         .map_err(|e| e.to_string())?;

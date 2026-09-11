@@ -53,7 +53,7 @@ pub fn load_session() -> Option<Session> {
 
 pub fn clear_session() -> Result<(), String> {
     let entry = keyring_entry()?;
-    match entry.delete_credential() {
+    match entry.delete_password() {
         Ok(()) => Ok(()),
         Err(keyring::Error::NoEntry) => Ok(()),
         Err(e) => Err(e.to_string()),

@@ -15,7 +15,7 @@ fn load_tasks(conn: &rusqlite::Connection, project_id: &str) -> Result<Vec<Task>
     let mut stmt = conn
         .prepare(
             "SELECT id, project_id, title, description, status, priority, parent_task_id,
-             estimate_hours, actual_hours, due_date, start_date, assignee_name, created_at
+             estimate_hours, actual_hours, due_date, start_date, assignee_name, sprint_id, tags, created_at
              FROM tasks WHERE project_id = ?1",
         )
         .map_err(|e| e.to_string())?;
@@ -34,7 +34,9 @@ fn load_tasks(conn: &rusqlite::Connection, project_id: &str) -> Result<Vec<Task>
                 due_date: row.get(9)?,
                 start_date: row.get(10)?,
                 assignee_name: row.get(11)?,
-                created_at: row.get(12)?,
+                sprint_id: row.get(12)?,
+                tags: row.get(13)?,
+                created_at: row.get(14)?,
             })
         })
         .map_err(|e| e.to_string())?;
