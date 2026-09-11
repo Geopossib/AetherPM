@@ -21,7 +21,9 @@ export function RequirementFilterBar({
   const [views, setViews] = useState<SavedView[]>([]);
   const [open, setOpen] = useState(false);
 
-  const refreshViews = () => api.listViews(projectId, "requirements").then(setViews).catch(console.error);
+  const refreshViews = () => {
+    api.listViews(projectId, "requirements").then(setViews).catch(console.error);
+  };
   useEffect(refreshViews, [projectId]);
 
   const isActive = filter.status !== "" || filter.reqType !== "";

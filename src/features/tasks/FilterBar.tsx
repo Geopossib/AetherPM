@@ -24,7 +24,9 @@ export function FilterBar({
   const [views, setViews] = useState<SavedView[]>([]);
   const [open, setOpen] = useState(false);
 
-  const refreshViews = () => api.listViews(projectId, "board").then(setViews).catch(console.error);
+  const refreshViews = () => {
+    api.listViews(projectId, "board").then(setViews).catch(console.error);
+  };
   useEffect(refreshViews, [projectId]);
 
   const isActive = filter.priority !== "" || filter.assignee !== "" || filter.tag !== "";

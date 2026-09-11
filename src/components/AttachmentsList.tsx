@@ -6,7 +6,9 @@ import { api, Attachment } from "@/lib/api";
 export function AttachmentsList({ projectId, entityType, entityId }: { projectId: string; entityType: string; entityId: string }) {
   const [attachments, setAttachments] = useState<Attachment[]>([]);
 
-  const refresh = () => api.listAttachments(projectId, entityType, entityId).then(setAttachments).catch(console.error);
+  const refresh = () => {
+    api.listAttachments(projectId, entityType, entityId).then(setAttachments).catch(console.error);
+  };
   useEffect(refresh, [projectId, entityType, entityId]);
 
   const pickFile = async () => {

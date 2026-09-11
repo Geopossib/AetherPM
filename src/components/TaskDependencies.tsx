@@ -14,7 +14,9 @@ export function TaskDependencies({ projectId, task, allTasks }: { projectId: str
   const [targetId, setTargetId] = useState("");
   const [linkType, setLinkType] = useState<TaskLinkType>("blocks");
 
-  const refresh = () => api.listTaskLinks(projectId).then(setLinks).catch(console.error);
+  const refresh = () => {
+    api.listTaskLinks(projectId).then(setLinks).catch(console.error);
+  };
   useEffect(refresh, [projectId]);
 
   const relevant = links.filter((l) => l.from_task_id === task.id || l.to_task_id === task.id);

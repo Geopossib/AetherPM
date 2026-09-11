@@ -22,10 +22,6 @@ reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-feature
 keyring = "2.3"
 toml = "0.8"
 
-[lib]
-name = "aetherpm_lib"
-crate-type = ["staticlib", "cdylib", "rlib"]
-
 [[bin]]
 name = "aetherpm"
 path = "src/main.rs"
